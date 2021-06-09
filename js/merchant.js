@@ -9,7 +9,7 @@ $(function(){
          //Ajax call to retrieve token from server
           $.get(baseURL+ "get_token.php", function(data) {
             console.log(data);
-            var url = baseURL+"hostedpage.html?"+json_data+"&token="+data+"&callbackurl="+callbackurl;
+            var url = baseURL+"hostedpage.html?"+json_data+"&token="+data+"&callbackurl="+callbackurl"&key=pk_sandbox_c24dc55e4d07719b80c0916ce8a28e4dbf6a048f";
             console.log(url);
             $('#payment_gateway').attr("src", url);
             $('#staticBackdrop').modal('show');
