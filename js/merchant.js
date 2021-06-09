@@ -14,3 +14,9 @@ $(function(){
          });
     });
 });
+
+window.addEventListener("message", (event) => {
+    if (event.data === "Close Iframe"){
+         $('#staticBackdrop').modal('hide');
+    }
+});
