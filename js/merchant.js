@@ -3,6 +3,7 @@ $(function(){
     $('#merchant_form').bind('submit', function(e){
          e.preventDefault();
          // Validating Field
+         console.log(document.location.origin);
          let data = $('#merchant_form').serializeArray();
          const json_data = $.param(data);
          var callbackurl = "https://google.com";
