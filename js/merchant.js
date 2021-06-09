@@ -5,7 +5,7 @@ $(function(){
          // Validating Field
          let data = $('#merchant_form').serializeArray();
          const json_data = $.param(data);
-         var callbackurl = $('#btn_proceed').attr("callbackurl");
+         var callbackurl = "https://google.com";
          //Ajax call to retrieve token from server
           $.get(baseURL+ "get_token.php", function(data) {
             console.log(data);
