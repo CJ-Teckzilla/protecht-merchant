@@ -10,6 +10,7 @@ $(function(){
           $.get(baseURL+ "get_token.php", function(data) {
             console.log(data);
             var url = baseURL+"hostedpage.html?"+json_data+"&token="+data+"&callbackurl="+callbackurl;
+            console.log(url);
             $('#payment_gateway').attr("src", url);
             $('#staticBackdrop').modal('show');
          });
