@@ -69,7 +69,7 @@ function map_params(data){
         // value of below fields are hardcoded just for example
         "number": "4242 4242 4242 4242",
         "cvv": "589",
-        "expiration_date"="12/24"
+        "expiration_date": "12/24"
     };
 }
 
