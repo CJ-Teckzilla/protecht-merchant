@@ -1,30 +1,15 @@
-// the below baseURL is of sandbox we need to change this url once the project is live
 var baseURL = 'https://sandbox.moderntransact.com/protecht/';
-$(function(){
-    // 1.Merchant needs to replace the below form id to their form id
-    $('#merchant_form').bind('submit', function(e){
-         e.preventDefault();
-         // sending all the input's which are present in the merchant form to map with the protecht parametes
-         let mapped_data = map_params(this);
-         const query_string = $.param(mapped_data);  // Converting object to query string
-         //2. Merchant will be redirected to the callbackurl after the successful response from protecht
-         const callbackurl = "https://google.com";  // Merchant has to replace the value of callbackurl
+function submit_form(merchant_data, callbackurl, public_key, ajax_url, iframe_id, display_form){
+         const query_string = $.param(merchant_data);  // Converting object to query string
          const origin = window.location.origin;
-         // protecht public key is a required parameter to display protecht iframe
-         //3. Merchant has to replace the value of public_key to his public_key
-         const public_key = "pk_sandbox_c24dc55e4d07719b80c0916ce8a28e4dbf6a048f"
          //Ajax call to retrieve token from server
-         //4. Merchant has to replace the baseURL + "get_token.php to their url
-          $.get(baseURL+ "get_token.php", function(token) {
+          $.get(ajax_url, function(token) {
             var url = baseURL+"hostedpage.html?"+query_string+"&token="+token+"&callbackurl="+callbackurl+"&key="+public_key+"&origin="+origin;
-            //5. Merchant has to replace the below iframe id to their iframe id
-            $('#payment_gateway').attr("src", url);  // Appending url to src attribute of an iframe
-            // We have use bootstrap modal popup form for example.
-            //6. Merchant has to replace the below code for displaying the modal popup form
-            $('#staticBackdrop').modal('show');  // opening modal popup form
+            $(iframe_id).attr("src", url);  // Appending url to src attribute of an iframe
+            display_form();  // opening modal popup form
          });
-    });
-});
+
+}
 
 // function to close iframe
 // How it works As the user clicks on the decline payment button a postmessage will be send to the merchant website
@@ -42,7 +27,7 @@ window.addEventListener("message", (event) => {
 function map_params(data){
     return {
         //8. merchant has to replace the id here
-        // For eg: this.first_name, here first_name is id of the input field so merchant has to replace first_name
+        // For eg: this.first_name, here first_name is id of the input field so merchant has to replace first_name to the id of his first name input
         // to their respective field id
         "first_name": extract_value(this.first_name),
         "last_name": extract_value(this.last_name),
@@ -69,7 +54,7 @@ function map_params(data){
         // value of below fields are hardcoded just for example
         "number": "4242 4242 4242 4242",
         "cvv": "589",
-        "expiration_date": "12/24"
+        "expiration_date":"12/24"
     };
 }
 
@@ -80,4 +65,25 @@ function extract_value(field){
     catch(err){
         return "";
     }
+}
+
+
+// This will be written by merchant
+$('#merchant_form').bind('submit', function(e){
+    e.preventDefault();
+    // sending all the input's which are present in the merchant form to map with the protecht parametes
+    let mapped_data = map_params(this);
+    let callbackurl = "https://google.com";
+    const public_key = "pk_sandbox_c24dc55e4d07719b80c0916ce8a28e4dbf6a048f";
+    let ajax_url = baseURL+"get_token.php";
+    let iframe_id = "#payment_gateway";
+    submit_form(mapped_data, callbackurl, public_key, ajax_url, iframe_id, display_form);
+});
+
+
+// This method open's the modal pop-up form.
+// I have used Bootstrap for creating a modal pop up form.
+// So merchant has to write his own code inside display_form function to open the modal pop up form
+function display_form(){
+    $('#staticBackdrop').modal('show');
 }
