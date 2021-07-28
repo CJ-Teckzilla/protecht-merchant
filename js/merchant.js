@@ -1,12 +1,17 @@
 var baseURL = 'https://sandbox.moderntransact.com/protecht/';
-function submit_form(merchant_data, callbackurl, public_key, ajax_url, iframe_id, display_form){
+function submit_form(merchant_data, callbackurl, public_key, ajax_url, iframe_id=false, display_form=false){
          const query_string = $.param(merchant_data);  // Converting object to query string
          const origin = window.location.origin;
          //Ajax call to retrieve token from server
           $.get(ajax_url, function(token) {
             var url = baseURL+"hostedpage.html?"+query_string+"&token="+token+"&callbackurl="+callbackurl+"&key="+public_key+"&origin="+origin;
-            $(iframe_id).attr("src", url);  // Appending url to src attribute of an iframe
-            display_form();  // opening modal popup form
+            if (iframe_id == false){
+                window.location.href = url;
+            }
+            else{
+                $(iframe_id).attr("src", url);  // Appending url to src attribute of an iframe
+                display_form();  // opening modal popup form
+            }
          });
 
 }
@@ -77,7 +82,9 @@ $('#merchant_form').bind('submit', function(e){
     const public_key = "pk_sandbox_c24dc55e4d07719b80c0916ce8a28e4dbf6a048f";
     let ajax_url = baseURL+"get_token.php";
     let iframe_id = "#payment_gateway";
-    submit_form(mapped_data, callbackurl, public_key, ajax_url, iframe_id, display_form);
+    submit_form(mapped_data, callbackurl, public_key, ajax_url); // This will redirect user to the hosted page instead of opening modal form
+    // if the user wants to display the hosted page inside an iframe modal pop-ip form then the user has to send iframe_id and display_form function
+    // submit_form(mapped_data, callbackurl, public_key, ajax_url, iframe_id, display_form); 
 });
 
 
